@@ -1,10 +1,8 @@
 import react, { useState, useEffect } from "react";
 import "../ToDo/TodoList.css";
 import PushPinTwoToneIcon from "@mui/icons-material/PushPinTwoTone";
-import AddCircleTwoToneIcon from "@mui/icons-material/AddCircleTwoTone";
-import { renderIntoDocument } from "react-dom/test-utils";
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import {Button, TextField} from '@mui/material';
+import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
+import { Button, TextField } from "@mui/material";
 
 export default function TodoList() {
   const [list, setList] = useState([
@@ -13,7 +11,8 @@ export default function TodoList() {
     "Get Dentist Appointment",
   ]);
   const [refresh, setRefresh] = useState(false);
-  let newItem = "";
+  // let newItem = "";
+  const [newItem, setNewItem] = useState("");
 
   const handleClick = () => {
     console.log("click");
@@ -21,29 +20,26 @@ export default function TodoList() {
     console.log("list", list);
     setRefresh(true);
     console.log(refresh);
+    setNewItem("");
   };
 
   const handleChange = (e) => {
-    console.log(e.target.value);
-    // newItem = [...list];
-    newItem = e.target.value;
-    console.log(newItem, "here");
+    setNewItem(e.target.value);
     setRefresh(false);
   };
 
   const handleRemove = (index) => {
-    console.log(index, "index");
-    const value = [...list]
-    const updatedList = value.filter((each, i)=>i !== index)
-    setList(updatedList)
-    console.log(updatedList,"updatedList");
+    const value = [...list];
+    const updatedList = value.filter((each, i) => i !== index);
+    setList(updatedList);
     setRefresh(false);
   };
 
   return (
     <>
-      <h1>ToDo List</h1>
-      {/* 1: Stike throght all completed items */}
+      <div className="outer">
+        <h1>ToDo List</h1>
+      </div>
       <div
         style={{
           border: "1px solid white",
@@ -52,11 +48,11 @@ export default function TodoList() {
         }}
       >
         <div>
-    <PushPinTwoToneIcon />
-  </div>
+          <PushPinTwoToneIcon />
+        </div>
 
         <label>Stike throght all completed items</label>
-        <div style={{paddingTop:"50px"}}>
+        <div style={{ paddingTop: "50px" }}>
           <div>
             {refresh || list.length !== 0
               ? list.map((each, index) => {
@@ -74,10 +70,8 @@ export default function TodoList() {
                           <label for="packers" class="strikethrough">
                             {each}
                           </label>{" "}
-                          <Button
-                            onClick={() => handleRemove( index)}
-                          >
-                            <DeleteTwoToneIcon fontSize="small"/>
+                          <Button onClick={() => handleRemove(index)}>
+                            <DeleteTwoToneIcon fontSize="small" />
                           </Button>
                         </div>
                       </ul>
@@ -86,16 +80,24 @@ export default function TodoList() {
                 })
               : null}
           </div>
-          <div style={{display:"initial"}}>
+          <div style={{ display: "initial" }}>
             <TextField
-            variant="standard"
+              variant="standard"
+              value={newItem}
               placeholder="add new item"
               onChange={(e) => handleChange(e)}
             />{" "}
-            <Button variant="contained"  onClick={() => handleClick()}>Add</Button>
+            <Button variant="contained" onClick={() => handleClick()}>
+              Add
+            </Button>
           </div>
-          <div style={{paddingTop:"90px"}}>
-          {list.length !==0? <Button variant="contained" onClick={() => setList([])}>Refresh</Button> : null}</div>
+          <div style={{ paddingTop: "90px" }}>
+            {list.length !== 0 ? (
+              <Button variant="contained" onClick={() => setList([])}>
+                Refresh
+              </Button>
+            ) : null}
+          </div>
         </div>
       </div>
     </>
